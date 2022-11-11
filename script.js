@@ -5,7 +5,6 @@ var DIRECTION = {
 	LEFT: 3,
 	RIGHT: 4
 };
-var rounds = [5, 5, 3, 3, 2];
 
 var Ball = {
 	new: function (incrementedSpeed) {
@@ -50,11 +49,11 @@ var Game = {
 		this.paddle = Paddle.new.call(this, 'right');
 		this.ball = Ball.new.call(this);
 
-		this.paddle.speed = 8;
+		this.paddle.speed = 15;
 		this.running = this.over = false;
 		this.turn = this.paddle;
-		this.timer = this.round = 0;
-		this.color = '#2c3e50';
+		this.timer = 0;
+		this.color = '#8B0000';
 
 		Pong.menu();
 		Pong.listen();
@@ -74,7 +73,7 @@ var Game = {
 		);
 
 		// Change the canvas color;
-		Pong.context.fillStyle = '#8A2BE2';
+		Pong.context.fillStyle = '8A2BE2ff';
 
 		// Draw the end game menu text ('Game Over' and 'Winner')
 		Pong.context.fillText(text,
@@ -105,7 +104,7 @@ var Game = {
 		);
 
 		// Change the canvas color;
-		this.context.fillStyle = '#8A2BE2f';
+		this.context.fillStyle = '#8A2BE2ff';
 
 		// Draw the 'press any key to begin' text
 		this.context.fillText('Press any key to begin',
@@ -179,26 +178,13 @@ var Game = {
 			}
 		}
 
-		// Check to see if the player won the round.
+		// Check to see if the player won .
 		if (this.player.score === 20) {
-			// Check to see if there are any more /levels left and display the victory screen if
-			// there are not.
-			if (!rounds[this.round + 1]) {
-				this.over = true;
-				setTimeout(function () { Pong.endGameMenu('Winner!'); }, 1000);
-			} else {
-				// If there is another round, reset all the values and increment the round number.
-				this.color = "#8A2BE2";
-				this.player.score = this.paddle.score = 0;
-				this.player.speed += 0.5;
-				this.paddle.speed += 1;
-				this.ball.speed += 1;
-				this.round += 1;
-
-			}
+			this.over = true;
+			setTimeout(function () { Pong.endGameMenu('Winner!'); }, 1000);
 		}
-		// Check to see if the paddle/AI has won the round.
-		else if (this.paddle.score === rounds[this.round]) {
+		// Check to see if the paddle/AI has won .
+		else if (this.paddle.score === 20) {
 			this.over = true;
 			setTimeout(function () { Pong.endGameMenu('Game Over!'); }, 1000);
 		}
@@ -256,11 +242,19 @@ var Game = {
 
 		// Draw the net (Line in the middle)
 		this.context.beginPath();
-		this.context.setLineDash([7, 15]);
-		this.context.moveTo((this.canvas.width / 2), this.canvas.height - 140);
-		this.context.lineTo((this.canvas.width / 2), 140);
+		this.context.setLineDash([10, 15]);
+		this.context.moveTo(10, this.canvas.height - 140);
+		this.context.lineTo(10, 140);
 		this.context.lineWidth = 10;
-		this.context.strokeStyle = '#ffffff';
+		this.context.strokeStyle = '#8A2BE2ff';
+		this.context.stroke();
+
+		this.context.beginPath();
+		this.context.setLineDash([10, 15]);
+		this.context.moveTo(this.canvas.width - 10, this.canvas.height - 140);
+		this.context.lineTo(this.canvas.width - 10, 140);
+		this.context.lineWidth = 10;
+		this.context.strokeStyle = '#8A2BE2ff';
 		this.context.stroke();
 
 		// Set the default canvas font and align it to the center
@@ -270,36 +264,18 @@ var Game = {
 		// Draw the players score (left)
 		this.context.fillText(
 			this.player.score.toString(),
-			(this.canvas.width / 2) - 300,
-			200
+			(this.canvas.width / 2) - 150,
+			1400
 		);
 
 		// Draw the paddles score (right)
 		this.context.fillText(
 			this.paddle.score.toString(),
-			(this.canvas.width / 2) + 300,
-			200
+			(this.canvas.width / 2) + 150,
+			1400
 		);
 
-		// Change the font size for the center score text
-		this.context.font = '30px Courier New';
 
-		// Draw the winning score (center)
-		this.context.fillText(
-			'Round ' + (Pong.round + 1),
-			(this.canvas.width / 2),
-			35
-		);
-
-		// Change the font size for the center score value
-		this.context.font = '40px Courier';
-
-		// Draw the current round number
-		this.context.fillText(
-			rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1],
-			(this.canvas.width / 2),
-			100
-		);
 	},
 
 	loop: function () {
@@ -329,7 +305,7 @@ var Game = {
 		document.addEventListener('keyup', function (key) { Pong.player.move = DIRECTION.IDLE; });
 	},
 
-	// Reset the ball location, the player turns and set a delay before the next round begins.
+	// Reset the ball location, the player turns and set a delay before the next .
 	_resetTurn: function(victor, loser) {
 		this.ball = Ball.new.call(this, this.ball.speed);
 		this.turn = loser;
