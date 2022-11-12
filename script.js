@@ -62,17 +62,17 @@ var Game = {
 	},
 
 	endGameMenu: function (text) {
-		Pong.context.font = '50px Courier New';
+		Pong.context.font = '50px Tahoma';
 		Pong.context.fillStyle = this.color;
 
 		Pong.context.fillRect(
-			Pong.canvas.width / 2 - 350,
-			Pong.canvas.height / 2 - 48,
+			Pong.canvas.width / 2,
+			Pong.canvas.height / 2,
 			700,
 			100
 		);
 
-		Pong.context.fillStyle = '8A2BE2ff';
+		Pong.context.fillStyle = '#8A2BE2ff';
 
 		Pong.context.fillText(text,
 			Pong.canvas.width / 2,
@@ -88,7 +88,7 @@ var Game = {
 	menu: function () {
 		Pong.draw();
 
-		this.context.font = '50px Courier New';
+		this.context.font = '50px Tahoma';
 		this.context.fillStyle = this.color;
 
 		this.context.fillRect(
@@ -102,7 +102,7 @@ var Game = {
 
 		this.context.fillText('Press any key to begin',
 			this.canvas.width / 2,
-			this.canvas.height / 2
+			this.canvas.height / 2+15
 		);
 	},
 
@@ -230,7 +230,7 @@ var Game = {
 		this.context.strokeStyle = '#8A2BE2ff';
 		this.context.stroke();
 
-		this.context.font = '100px Courier New';
+		this.context.font = '80px Tahoma';
 		this.context.textAlign = 'center';
 
 		this.context.fillText(
